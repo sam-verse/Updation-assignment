@@ -31,7 +31,7 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
           style={{
             background: 'radial-gradient(ellipse at center, rgba(255, 193, 7, 0.13) 0%, rgba(255, 152, 0, 0.10) 60%, rgba(255,255,255,0.05) 100%)',
             backdropFilter: 'blur(32px)',
@@ -45,7 +45,7 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
             initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 10 }}
-            className="relative w-full max-w-sm rounded-2xl shadow-2xl border border-orange-200 overflow-hidden"
+            className="relative w-full max-w-xs sm:max-w-sm rounded-2xl shadow-2xl border border-orange-200 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
@@ -93,7 +93,7 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
               </div>
 
               {/* Content */}
-              <div className="p-5">
+              <div className="p-3 sm:p-5">
                 <div className="flex items-start gap-3 mb-4 p-3 rounded-lg bg-red-50 border border-red-100">
                 <AlertTriangle size={18} className="text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
@@ -154,7 +154,7 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
               )}
 
               {/* Action Buttons */}
-              <div className="px-5 pb-5 pt-3 flex justify-end space-x-3">
+              <div className="px-3 sm:px-5 pb-3 sm:pb-5 pt-3 flex justify-end space-x-3">
                 <button
                   type="button"
                   onClick={onClose}

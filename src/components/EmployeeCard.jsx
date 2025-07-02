@@ -168,10 +168,11 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
     <>
       {isDragging && !dragOverlay ? (
         <motion.div
-          style={{ minWidth: '18rem', height: '9rem', opacity: 0.8, filter: 'blur(1.2px)', borderStyle: 'dashed', borderWidth: 2, borderColor: '#f59e42', transition: 'all 0.25s cubic-bezier(0.4,0,0.2,1)' }}
+          style={{ minWidth: '18rem', height: '9rem', opacity: 0.8, filter: 'blur(1.2px)', borderStyle: 'dashed', borderWidth: 2, borderColor: '#f59e42', transition: 'all 0.18s cubic-bezier(0.4,0,0.2,1)' }}
           className={`${cardClasses} border-dashed pointer-events-none`}
           animate={{ opacity: 0.7 }}
-          transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+          transition={{ type: 'spring', stiffness: 340, damping: 18, mass: 0.7 }}
+          layout
         >
           <CardContent employee={employee} variant={variant} isDragging={isDragging} dragOverlay={dragOverlay} />
         </motion.div>
@@ -187,7 +188,7 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
             border: '2.5px solid #f59e42',
             borderRadius: '1.25rem',
             boxShadow: '0 12px 36px 0 rgba(245,158,66,0.22), 0 2px 12px 0 rgba(245,158,66,0.10)',
-            transition: 'box-shadow 0.2s, border 0.2s',
+            transition: 'box-shadow 0.18s, border 0.18s',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-start',
@@ -197,30 +198,10 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
           animate={{ scale: 1.04, opacity: 1 }}
           initial={{ scale: 1, opacity: 0.92 }}
           exit={{ scale: 1, opacity: 0.7 }}
-          transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-          className={`${cardClasses} pointer-events-none`}
+          transition={{ type: 'spring', stiffness: 340, damping: 18, mass: 0.7 }}
           layout
         >
-          <div className="flex items-center w-full h-full gap-4 ml-4">
-            {/* Avatar */}
-            <div className="relative flex-shrink-0">
-              <img
-                src={employee.avatar}
-                alt={employee.name}
-                className="w-12 h-12 rounded-full object-cover ring-2 ring-blue-500/20"
-                onError={(e) => {
-                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(employee.name)}&background=3B82F6&color=ffffff&size=48`;
-                }}
-              />
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-            </div>
-            {/* Content */}
-            <div className="flex flex-col justify-center min-w-0 flex-1 pl-2">
-              <h3 className="font-semibold text-sm truncate text-black">{employee.name}</h3>
-              <p className="text-xs truncate text-black">{employee.designation}</p>
-              <p className="text-xs truncate text-black">{employee.team}</p>
-            </div>
-          </div>
+          <CardContent employee={employee} variant={variant} isDragging={isDragging} dragOverlay={dragOverlay} />
         </motion.div>
       ) : (
         <motion.div
@@ -249,7 +230,8 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
             opacity: dragOverlay ? 1 : isDragging ? 0.7 : 1,
             filter: 'none'
           }}
-          transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+          transition={{ type: 'spring', stiffness: 340, damping: 18, mass: 0.7 }}
+          layout
           className={`${cardClasses} relative group ${dragOverlay ? 'ring-2 ring-orange-300 border-orange-300' : ''} ${
             isDragging ? 'opacity-70' : ''
           }`}

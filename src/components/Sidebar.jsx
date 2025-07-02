@@ -91,7 +91,7 @@ const Sidebar = ({ onEditEmployee, onDeleteEmployee }) => {
             />
             {/* Drawer */}
             <div
-              className={`relative w-[92vw] max-w-xs h-full bg-[#fff5e0] text-black shadow-2xl border-r border-[#ffe0a3] flex flex-col z-50 rounded-r-3xl backdrop-blur-xl pb-6`}
+              className={`relative w-[100vw] max-w-xs sm:w-[92vw] h-full bg-[#fff5e0] text-black shadow-2xl border-r border-[#ffe0a3] flex flex-col z-50 rounded-r-3xl backdrop-blur-xl pb-6`}
               style={{ boxShadow: '0 8px 32px 0 rgba(248,178,23,0.18)' }}
             >
               {/* Profile Section */}
@@ -203,11 +203,12 @@ const Sidebar = ({ onEditEmployee, onDeleteEmployee }) => {
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => setIsAddModalOpen(true)}
-                className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-2xl border-4 border-white/40 flex items-center justify-center text-white text-3xl font-bold backdrop-blur-lg"
+                className="fixed bottom-4 right-4 z-50 w-12 h-12 sm:bottom-8 sm:right-8 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-2xl border-4 border-white/40 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold backdrop-blur-lg"
                 style={{ boxShadow: '0 8px 32px 0 rgba(34,139,230,0.18)' }}
                 aria-label="Add Employee"
               >
-                <Plus size={32} />
+                <Plus size={24} className="sm:hidden" />
+                <Plus size={32} className="hidden sm:inline" />
               </motion.button>
             </div>
           </motion.div>
