@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom orange scrollbar for sidebar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  background: #fff5e0;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ffd18c;
+  border-radius: 8px;
+  border: 2px solid #fff5e0;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ffc76b;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ffd18c #fff5e0;
+}
