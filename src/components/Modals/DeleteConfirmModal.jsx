@@ -31,7 +31,7 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
           style={{
             background: 'radial-gradient(ellipse at center, rgba(255, 193, 7, 0.13) 0%, rgba(255, 152, 0, 0.10) 60%, rgba(255,255,255,0.05) 100%)',
             backdropFilter: 'blur(32px)',
@@ -45,7 +45,7 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
             initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 10 }}
-            className="relative w-full max-w-sm md:max-w-md rounded-2xl shadow-2xl border border-orange-200 overflow-hidden bg-white"
+            className="relative w-full max-w-sm rounded-2xl shadow-2xl border border-orange-200 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
@@ -74,24 +74,26 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-100/15 rounded-full -ml-16 -mb-16"></div>
             <div className="relative z-10">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-amber-200 bg-white/80 sticky top-0 z-20">
+              <div className="flex items-center justify-between p-4 border-b border-amber-200">
                 <div className="flex items-center gap-3">
                   <div className="p-1.5 bg-red-100 rounded-lg">
                     <Trash2 size={16} className="text-red-600" />
                   </div>
-                  <h2 className="text-lg font-bold text-amber-900">Delete Employee</h2>
+                  <h2 className="text-lg font-bold text-amber-900">
+                    Delete Employee
+                  </h2>
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-amber-500 hover:text-amber-600 transition-colors p-2 md:p-1 -mr-1 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-200"
+                  className="text-amber-500 hover:text-amber-600 transition-colors p-1 -mr-1"
                   aria-label="Close"
                 >
-                  <X size={22} />
+                  <X size={18} />
                 </button>
               </div>
 
               {/* Content */}
-              <div className="p-4 md:p-5">
+              <div className="p-5">
                 <div className="flex items-start gap-3 mb-4 p-3 rounded-lg bg-red-50 border border-red-100">
                 <AlertTriangle size={18} className="text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
@@ -152,11 +154,11 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
               )}
 
               {/* Action Buttons */}
-              <div className="px-2 md:px-5 pb-5 pt-3 flex flex-col md:flex-row justify-end space-y-2 md:space-y-0 md:space-x-3">
+              <div className="px-5 pb-5 pt-3 flex justify-end space-x-3">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full md:w-auto px-4 py-2 text-sm text-amber-700 font-medium rounded-lg border border-amber-200 bg-white hover:bg-amber-50 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-amber-200 focus:ring-offset-1"
+                  className="px-4 py-2 text-sm text-amber-700 font-medium rounded-lg border border-amber-200 bg-white hover:bg-amber-50 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-amber-200 focus:ring-offset-1"
                   disabled={isDeleting}
                 >
                   Cancel
@@ -165,11 +167,12 @@ const DeleteConfirmModal = ({ employee, isOpen, onClose }) => {
                   type="button"
                   onClick={handleDelete}
                   disabled={isDeleting}
-                  className="w-full md:w-auto px-4 py-2 text-sm bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-1 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="px-4 py-2 text-sm bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-1 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   <Trash2 size={14} />
                   {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
+                </div>
               </div>
             </div>
           </motion.div>
