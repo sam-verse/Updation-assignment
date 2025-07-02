@@ -56,7 +56,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4"
           style={{
             background: 'radial-gradient(ellipse at center, rgba(255, 193, 7, 0.13) 0%, rgba(255, 152, 0, 0.10) 60%, rgba(255,255,255,0.05) 100%)',
             backdropFilter: 'blur(32px)',
@@ -70,7 +70,7 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 10 }}
-            className="relative w-full max-w-sm rounded-2xl shadow-2xl border border-orange-200 overflow-hidden"
+            className="relative w-full max-w-sm md:max-w-md rounded-2xl shadow-2xl border border-orange-200 overflow-hidden bg-white"
             onClick={(e) => e.stopPropagation()}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
@@ -99,21 +99,19 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-100/15 rounded-full -ml-16 -mb-16"></div>
             <div className="relative z-10">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-orange-200 bg-white/80">
-                <h2 className="text-lg font-bold text-black">
-                  Add New Employee
-                </h2>
+              <div className="flex items-center justify-between p-4 border-b border-orange-200 bg-white/80 sticky top-0 z-20">
+                <h2 className="text-lg font-bold text-black">Add New Employee</h2>
                 <button
                   onClick={onClose}
-                  className="text-orange-500 hover:text-orange-600 transition-colors p-1 -mr-1"
+                  className="text-orange-500 hover:text-orange-600 transition-colors p-2 md:p-1 -mr-1 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-200"
                   aria-label="Close"
                 >
-                  <X size={18} />
+                  <X size={22} />
                 </button>
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="p-5 space-y-3">
+              <form onSubmit={handleSubmit} className="p-4 md:p-5 space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-black mb-1.5">
                     <User size={14} className="inline mr-1.5" />
@@ -220,18 +218,18 @@ const AddEmployeeModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Action Buttons */}
-              <div className="px-5 pb-5 pt-3 flex justify-end space-x-3">
+              <div className="px-2 md:px-5 pb-5 pt-3 flex flex-col md:flex-row justify-end space-y-2 md:space-y-0 md:space-x-3">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-sm text-orange-700 font-medium rounded-lg border border-orange-200 bg-white hover:bg-orange-50 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-1"
+                  className="w-full md:w-auto px-4 py-2 text-sm text-orange-700 font-medium rounded-lg border border-orange-200 bg-white hover:bg-orange-50 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-1"
                   disabled={isSubmitting}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-offset-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full md:w-auto px-4 py-2 text-sm bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-offset-1 disabled:opacity-70 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Adding...' : 'Add Employee'}

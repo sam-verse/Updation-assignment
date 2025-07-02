@@ -91,7 +91,7 @@ const Sidebar = ({ onEditEmployee, onDeleteEmployee }) => {
             />
             {/* Drawer */}
             <div
-              className={`relative w-[92vw] max-w-xs h-full bg-[#fff5e0] text-black shadow-2xl border-r border-[#ffe0a3] flex flex-col z-50 rounded-r-3xl backdrop-blur-xl pb-6`}
+              className={`relative w-[100vw] max-w-xs h-full bg-[#fff5e0] text-black shadow-2xl border-r border-[#ffe0a3] flex flex-col z-50 rounded-r-3xl backdrop-blur-xl pb-6 md:w-[360px]`}
               style={{ boxShadow: '0 8px 32px 0 rgba(248,178,23,0.18)' }}
             >
               {/* Profile Section */}
@@ -102,82 +102,29 @@ const Sidebar = ({ onEditEmployee, onDeleteEmployee }) => {
                 className="flex flex-col items-center gap-2 pt-7 pb-4 px-6 border-b border-primary/20 mb-2"
               >
                 <img
-                src={companyLogo}
-                alt="HappyFox Logo"
-                className="w-10 md:h-10"
-                // style={{ boxShadow: '0 2px 16px 0 rgba(245,158,66,0.10), 0 1.5px 8px 0 rgba(34,139,230,0.10)' }}
-              />
-                <span className={`text-lg font-bold tracking-tight text-blaack`}>happyfox</span>
-                <span className={`text-xs font-medium text-accent`}>Organization Chart</span>
+                  src={companyLogo}
+                  alt="HappyFox Logo"
+                  className="w-12 h-12 md:w-10 md:h-10"
+                />
+                <span className="text-lg font-bold tracking-tight text-black">happyfox</span>
+                <span className="text-xs font-medium text-accent">Organization Chart</span>
               </motion.div>
-
               {/* Top App Bar */}
-              <div className={`flex items-center justify-between px-5 py-4 rounded-tr-3xl bg-[#fff5e0] border-b border-[#ffe0a3] shadow-md mb-2`}>
+              <div className="flex items-center justify-between px-5 py-4 rounded-tr-3xl bg-[#fff5e0] border-b border-[#ffe0a3] shadow-md mb-2 sticky top-0 z-10 md:static md:z-auto">
                 <div className="flex-1 text-center">
-                  <span className={`text-lg font-bold tracking-tight text-primary`}>Employees</span>
+                  <span className="text-lg font-bold tracking-tight text-primary">Employees</span>
                 </div>
+                <button
+                  className="ml-2 p-2 rounded-full bg-orange-500 text-white border border-orange-500 hover:bg-orange-600 focus:outline-none transition-all md:hidden"
+                  style={{ width: 36, height: 36 }}
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close Sidebar"
+                >
+                  <X size={20} />
+                </button>
               </div>
-
-              {/* Navigation/Filters */}
-              <div className="px-5 mb-4 mt-2 w-full">
-                <div className="flex flex-row items-center justify-between gap-2 w-full">
-                  {/* Left: Search and other filters */}
-                  <div className="flex flex-row items-center gap-2 flex-1">
-                    <div className="relative w-full max-w-xs">
-                      <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        placeholder="Search employees..."
-                        className={inputButtonClass + ' placeholder:text-black/60'}
-                      />
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark" size={18} />
-                    </div>
-                    {/* Add other filters here if needed */}
-                  </div>
-                  {/* Right: 'All Teams' filter dropdown */}
-                  <div className="flex flex-row items-center ml-2">
-                    <div className="relative" ref={customDropdownRef}>
-                      <button
-                        className={inputButtonClass + (customDropdownOpen ? ' ring-2 ring-primary-dark' : '') + ' min-w-[160px]'}
-                        onClick={() => setCustomDropdownOpen((open) => !open)}
-                        type="button"
-                        aria-haspopup="listbox"
-                        aria-expanded={customDropdownOpen}
-                      >
-                        <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-dark" size={18} />
-                        <span className="flex-1 text-left truncate">{selectedTeam === 'all' ? 'All Teams' : selectedTeam}</span>
-                        <svg className={`ml-2 w-5 h-5 transition-transform duration-200 ${customDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-                      </button>
-                      {customDropdownOpen && (
-                        <div className="absolute left-0 mt-2 w-full bg-[#ffeaba] border border-[#ffe0a3] rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto animate-fade-in">
-                          {['all', ...teams].map(team => (
-                            <button
-                              key={team}
-                              className={`w-full text-left pl-10 pr-4 py-2 rounded-lg transition-colors duration-100 flex items-center
-                                ${selectedTeam === team ? 'bg-[#ffd18c] text-black font-bold' : 'text-black font-medium'}
-                                hover:bg-[#ffe0a3] hover:text-black focus:bg-[#ffd18c]`}
-                              onClick={() => {
-                                setSelectedTeam(team);
-                                setCustomDropdownOpen(false);
-                              }}
-                              tabIndex={0}
-                              role="option"
-                              aria-selected={selectedTeam === team}
-                            >
-                              <Filter className="mr-2 text-primary-dark" size={18} /> {team === 'all' ? 'All Teams' : team}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
               {/* Employee List */}
-              <div className="flex-1 overflow-y-auto px-3 space-y-4 pb-4 custom-scrollbar">
+              <div className="flex-1 overflow-y-auto px-2 space-y-3 pb-4 custom-scrollbar">
                 {filteredEmployees.length > 0 ? (
                   filteredEmployees.map(employee => (
                     <motion.div
@@ -188,7 +135,7 @@ const Sidebar = ({ onEditEmployee, onDeleteEmployee }) => {
                       whileHover={{ scale: 1.03, boxShadow: '0 8px 32px 0 rgba(34,139,230,0.10)' }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                      className={`rounded-xl border shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing`}
+                      className="rounded-xl border shadow-md transition-all duration-200 cursor-pointer active:scale-95 bg-white/90 w-full md:w-auto"
                     >
                       <EmployeeCard employee={employee} variant="sidebar" onEdit={onEditEmployee} onDelete={onDeleteEmployee} />
                     </motion.div>
@@ -197,18 +144,6 @@ const Sidebar = ({ onEditEmployee, onDeleteEmployee }) => {
                   <div className="text-center text-primary-dark mt-16 text-lg font-medium">No employees found.</div>
                 )}
               </div>
-
-              {/* Floating Add Employee Button */}
-              <motion.button
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={() => setIsAddModalOpen(true)}
-                className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 shadow-2xl border-4 border-white/40 flex items-center justify-center text-white text-3xl font-bold backdrop-blur-lg"
-                style={{ boxShadow: '0 8px 32px 0 rgba(34,139,230,0.18)' }}
-                aria-label="Add Employee"
-              >
-                <Plus size={32} />
-              </motion.button>
             </div>
           </motion.div>
         )}
