@@ -31,7 +31,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
     try {
       await updateEmployee(employee.id, formData);
       onClose();
@@ -49,7 +48,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
     }));
   };
 
-  // Get potential managers (excluding the current employee and their descendants)
   const isDescendant = (ancestorId, descendantId) => {
     if (!ancestorId || !descendantId) return false;
     const emp = employees.find(e => e.id === descendantId);
@@ -79,17 +77,15 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
           }}
           onClick={onClose}
         >
-          {/* Soft blurred vignette/glow behind card for elevation */}
           <div className="absolute -inset-8 z-0 pointer-events-none rounded-3xl bg-gradient-to-br from-amber-200/40 via-orange-200/30 to-white/0 blur-2xl" />
           <motion.div
             initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 10 }}
             className="relative w-full max-w-sm rounded-2xl shadow-2xl border border-orange-200 overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
-            {/* Animated gradient background */}
             <motion.div
               className="absolute inset-0 z-0"
               style={{
@@ -99,25 +95,18 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
               animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
               transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
             />
-            {/* Glass overlay with warm tint */}
             <div className="absolute inset-0 bg-white/60 backdrop-blur-xl" />
-            {/* Subtle pattern overlay */}
             <div className="absolute inset-0 pointer-events-none opacity-20" style={{backgroundImage: 'repeating-linear-gradient(135deg, #ffe0b2 0 2px, transparent 2px 24px)'}} />
-            {/* Glowing border */}
             <motion.div
               className="absolute inset-0 rounded-2xl pointer-events-none border-2 border-amber-400/40"
               animate={{ opacity: [0.7, 1, 0.7] }}
               transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
             />
-            {/* Decorative orbs inside card */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-orange-200/20 rounded-full -mr-12 -mt-12"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-100/15 rounded-full -ml-16 -mb-16"></div>
             <div className="relative z-10">
-              {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-amber-200">
-                <h2 className="text-lg font-bold text-amber-900">
-                  Edit Employee
-                </h2>
+                <h2 className="text-lg font-bold text-amber-900">Edit Employee</h2>
                 <button
                   onClick={onClose}
                   className="text-amber-500 hover:text-amber-600 transition-colors p-1 -mr-1"
@@ -126,8 +115,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                   <X size={18} />
                 </button>
               </div>
-
-              {/* Form */}
               <form onSubmit={handleSubmit} className="p-5 space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-amber-700 mb-1.5">
@@ -144,7 +131,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                     placeholder="Enter full name"
                   />
                 </div>
-
                 <div>
                   <label className="block text-xs font-medium text-amber-700 mb-1.5">
                     <Mail size={14} className="inline mr-1.5" />
@@ -160,7 +146,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                     placeholder="Enter email address"
                   />
                 </div>
-
                 <div>
                   <label className="block text-xs font-medium text-amber-700 mb-1.5">
                     <Phone size={14} className="inline mr-1.5" />
@@ -175,7 +160,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                     placeholder="Enter phone number"
                   />
                 </div>
-
                 <div>
                   <label className="block text-xs font-medium text-amber-700 mb-1.5">
                     <Building size={14} className="inline mr-1.5" />
@@ -191,7 +175,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                     placeholder="Enter job designation"
                   />
                 </div>
-
                 <div>
                   <label className="block text-xs font-medium text-amber-700 mb-1.5">
                     <Users size={14} className="inline mr-1.5" />
@@ -213,7 +196,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                     ))}
                   </datalist>
                 </div>
-
                 <div>
                   <label className="block text-xs font-medium text-amber-700 mb-1.5">
                     <UserCheck size={14} className="inline mr-1.5" />
@@ -233,8 +215,6 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
                     ))}
                   </select>
                 </div>
-
-                {/* Action Buttons */}
                 <div className="px-5 pb-5 pt-3 flex justify-end space-x-3">
                   <button
                     type="button"

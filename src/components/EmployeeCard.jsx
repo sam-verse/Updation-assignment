@@ -156,11 +156,11 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
                   {employees.filter(emp => emp.managerId === employee.id).length}
                   <span className="ml-0.5 opacity-90">reports</span>
                 </span>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
+        </div>
+      </div>
     );
   }
 

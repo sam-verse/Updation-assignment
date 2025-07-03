@@ -7,28 +7,8 @@ import EmployeeCard from './EmployeeCard';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import toast from 'react-hot-toast';
-
-const DropZone = ({ employee, children, isDropTarget, isInvalidDrop }) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id: employee.id,
-    data: employee,
-  });
-  const highlight = isOver || isDropTarget;
-  return (
-    <div
-      ref={setNodeRef}
-      className={`relative group transition-all duration-200 ${highlight ? (isInvalidDrop ? 'ring-4 ring-red-400/90 scale-105 shadow-xl bg-red-100/80' : 'ring-4 ring-green-400/90 scale-105 shadow-xl bg-green-100/80') : ''} rounded-2xl shadow-lg`}
-      style={{ minHeight: 0, zIndex: highlight ? 20 : 1, transition: 'box-shadow 0.18s, transform 0.18s' }}
-    >
-      {highlight && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-lg ${isInvalidDrop ? 'bg-red-200/90 text-red-900' : 'bg-green-200/90 text-green-900'}`}>{isInvalidDrop ? 'Invalid drop' : 'Drop here'}</span>
-        </div>
-      )}
-      {children}
-    </div>
-  );
-};
+import ZoomButtons from './ZoomButtons';
+import DropZone from './DropZone';
 
 // --- Classic grid-aligned tree layout for perfect equal spacing and alignment ---
 const compactMode = true;
@@ -89,84 +69,6 @@ function collectNodePositionsGrid(node, positions, parent = null) {
   }
 }
 
-// ZoomButtons component for chart controls
-function ZoomButtons({ centerChart, handTool, setHandTool, zoom, setZoom, pan, setPan, chartRef, positions }) {
-  const btnBase =
-    'w-9 h-9 flex items-center justify-center rounded-full border transition-all focus:outline-none focus:ring-2 focus:ring-primary/60 shadow-sm';
-
-  // Debounce zoom to prevent rapid double-zoom
-  const zoomTimeout = React.useRef(null);
-  const [zoomDisabled, setZoomDisabled] = React.useState(false);
-  const debouncedZoom = (delta) => {
-    if (zoomDisabled) return;
-    setZoomDisabled(true);
-    setZoom(z => {
-      let newZoom = +(z + delta).toFixed(3);
-      newZoom = Math.max(0.5, Math.min(2.5, newZoom));
-      // Do NOT recenter or change pan here; just zoom in/out
-      return newZoom;
-    });
-    clearTimeout(zoomTimeout.current);
-    zoomTimeout.current = setTimeout(() => setZoomDisabled(false), 120);
-  };
-
-  return (
-    <>
-      <button
-        onClick={() => debouncedZoom(0.1)}
-        className={`${btnBase} bg-primary-dark text-white border-primary hover:bg-primary active:scale-95`}
-        title="Zoom In"
-        aria-label="Zoom In"
-        disabled={zoomDisabled}
-        style={zoomDisabled ? { opacity: 0.7, pointerEvents: 'none' } : {}}
-      >
-        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </button>
-      <button
-        onClick={() => debouncedZoom(-0.1)}
-        className={`${btnBase} bg-primary-dark text-white border-primary hover:bg-primary active:scale-95`}
-        title="Zoom Out"
-        aria-label="Zoom Out"
-        disabled={zoomDisabled}
-        style={zoomDisabled ? { opacity: 0.7, pointerEvents: 'none' } : {}}
-      >
-        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </button>
-      <button
-        onClick={centerChart}
-        className={`${btnBase} bg-primary-dark text-white border-primary hover:bg-primary active:scale-95`}
-        title="Reset"
-        aria-label="Reset"
-      >
-        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-          <path d="M21 3v5h-5"/>
-          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-          <path d="M3 21v-5h5"/>
-        </svg>
-      </button>
-      <button
-        onClick={() => setHandTool(!handTool)}
-        className={
-          handTool
-            ? `${btnBase} bg-gradient-to-br from-yellow-400 via-orange-400 to-orange-500 text-white border-2 border-orange-400 shadow-lg ring-2 ring-orange-300 animate-pulse`
-            : `${btnBase} bg-white text-orange-500 border-orange-300 hover:bg-orange-100 active:scale-95`
-        }
-        title={handTool ? "Disable Hand Tool" : "Enable Hand Tool"}
-        aria-label={handTool ? "Disable Hand Tool" : "Enable Hand Tool"}
-        style={handTool ? { boxShadow: '0 0 0 4px rgba(251,191,36,0.18), 0 8px 32px 0 rgba(251,191,36,0.12)' } : {}}
-      >
-        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-          <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-          <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
-          <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
-          <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
-        </svg>
-      </button>
-    </>
-  );
-}
-
 // Add custom centerOverlay modifier
 const centerOverlay = ({ transform }) => ({
   ...transform,
@@ -174,7 +76,7 @@ const centerOverlay = ({ transform }) => ({
   y: transform.y - 60,  // half of card height
 });
 
-const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, onDeleteEmployee }) => {
+const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, onDeleteEmployee, onEmployeeMoved }) => {
   const { 
     employees, 
     filteredEmployees, 
@@ -259,8 +161,9 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
       toast.error('Cannot move employee to their own descendant');
       return;
     }
-    // Prevent moving to the same manager
+    // Prevent moving to the same manager (invalid drop)
     if (draggedEmployee.managerId === targetEmployee.id) {
+      // Optionally show a toast or just silently ignore
       toast.error(
         <span>
           <b>{draggedEmployee.name}</b> is already reporting to <b>{targetEmployee.name}</b> - invalid move
@@ -271,9 +174,12 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
     moveEmployee(draggedEmployee.id, targetEmployee.id);
     toast.success(
       <span>
-        <b>{draggedEmployee.name}</b> have to report to <b>{targetEmployee.name}</b> — employee updated successfully
+        <b>{draggedEmployee.name}</b> now reports to <b>{targetEmployee.name}</b> — employee updated successfully
       </span>
     );
+    if (onEmployeeMoved) {
+      onEmployeeMoved(draggedEmployee, targetEmployee);
+    }
   };
 
   const handleDragCancel = () => {
@@ -309,9 +215,8 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
   };
 
   const exportAsPDF = async () => {
-    const element = document.getElementById('org-chart');
+    const element = document.getElementById('org-chart-content');
     if (!element) return;
-    
     try {
       const canvas = await html2canvas(element, {
         backgroundColor: '#ffffff',
@@ -319,17 +224,54 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
         logging: false,
         useCORS: true
       });
-      
-      const imgData = canvas.toDataURL('image/png');
+      // Crop the canvas to the bounding box of non-empty pixels
+      const ctx = canvas.getContext('2d');
+      const { width, height } = canvas;
+      const imageData = ctx.getImageData(0, 0, width, height);
+      let minX = width, minY = height, maxX = 0, maxY = 0;
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const idx = (y * width + x) * 4;
+          const alpha = imageData.data[idx + 3];
+          if (alpha > 0) {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+          }
+        }
+      }
+      // Add a small margin
+      const margin = 20 * 2; // 20px at 2x scale
+      minX = Math.max(0, minX - margin);
+      minY = Math.max(0, minY - margin);
+      maxX = Math.min(width, maxX + margin);
+      maxY = Math.min(height, maxY + margin);
+      const cropWidth = maxX - minX;
+      const cropHeight = maxY - minY;
+      // Create cropped canvas
+      const cropped = document.createElement('canvas');
+      cropped.width = cropWidth;
+      cropped.height = cropHeight;
+      cropped.getContext('2d').drawImage(canvas, minX, minY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+      const imgData = cropped.toDataURL('image/png');
       const pdf = new jsPDF('l', 'mm', 'a4');
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      // Scale to fit PDF page
+      let imgWidth = pdfWidth;
+      let imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+      if (imgHeight > pdfHeight) {
+        imgHeight = pdfHeight;
+        imgWidth = (imgProps.width * imgHeight) / imgProps.height;
+      }
+      // Center exactly
+      const x = (pdfWidth - imgWidth) / 2;
+      const y = (pdfHeight - imgHeight) / 2;
+      pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
       pdf.save('org-chart.pdf');
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   // Enhanced wheel handler for smooth trackpad, mouse wheel, and pinch-to-zoom
@@ -628,7 +570,7 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
       let isInvalidDrop = false;
       if (draggedEmployee && overId === pos.id) {
         isDropTarget = true;
-        isInvalidDrop = draggedEmployee.id === pos.id || isDescendant(draggedEmployee.id, pos.id, employees);
+        isInvalidDrop = draggedEmployee.id === pos.id || isDescendant(draggedEmployee.id, pos.id, employees) || (draggedEmployee.managerId === pos.id);
       }
       return (
         <div
@@ -825,31 +767,33 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
               </button>
             </div>
           )}
-          <div
-            id="org-chart"
-            className={`relative flex items-center ${selectedTeam === 'all' ? 'justify-end' : 'justify-center'}`}
-            style={{
-              transform: `scale(${zoom}) translate(${(pan.x + 40) / zoom}px, ${pan.y / zoom}px)`,
-              position: 'relative',
-              minWidth: positions.length > 0 ? (Math.max(...positions.map(p => p.x)) + 1200) : 1600,
-              minHeight: positions.length > 0 ? (Math.max(...positions.map(p => p.y)) + 1000) : 1400,
-              padding: selectedTeam === 'all' ? '64px 24px 64px 0' : '64px 0',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: selectedTeam === 'all' ? 'flex-end' : 'center',
-              boxSizing: 'border-box',
-              marginRight: selectedTeam === 'all' ? 0 : undefined,
-              marginLeft: selectedTeam === 'all' ? 'auto' : undefined,
-            }}
-          >
-            {renderLines()}
-            {positions.length > 0 ? renderEmployeeNodes() : (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`flex flex-col items-center justify-center h-96`}>
-                <Users size={64} className="opacity-50 mb-4" />
-                <h3 className="text-xl font-medium mb-2">No employees to display</h3>
-                <p className="text-center text-sm max-w-md">{(searchTerm || selectedTeam !== 'all') ? 'No employees match your current filter criteria. Try adjusting your search or team filter.' : 'Add some employees to get started with your organization chart.'}</p>
-              </motion.div>
-            )}
+          <div id="org-chart-content" style={{width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <div
+              id="org-chart"
+              className={`relative flex items-center ${selectedTeam === 'all' ? 'justify-end' : 'justify-center'}`}
+              style={{
+                transform: `scale(${zoom}) translate(${(pan.x + 40) / zoom}px, ${pan.y / zoom}px)`,
+                position: 'relative',
+                minWidth: positions.length > 0 ? (Math.max(...positions.map(p => p.x)) + 1200) : 1600,
+                minHeight: positions.length > 0 ? (Math.max(...positions.map(p => p.y)) + 1000) : 1400,
+                padding: selectedTeam === 'all' ? '64px 24px 64px 0' : '64px 0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: selectedTeam === 'all' ? 'flex-end' : 'center',
+                boxSizing: 'border-box',
+                marginRight: selectedTeam === 'all' ? 0 : undefined,
+                marginLeft: selectedTeam === 'all' ? 'auto' : undefined,
+              }}
+            >
+              {renderLines()}
+              {positions.length > 0 ? renderEmployeeNodes() : (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`flex flex-col items-center justify-center h-96`}>
+                  <Users size={64} className="opacity-50 mb-4" />
+                  <h3 className="text-xl font-medium mb-2">No employees to display</h3>
+                  <p className="text-center text-sm max-w-md">{(searchTerm || selectedTeam !== 'all') ? 'No employees match your current filter criteria. Try adjusting your search or team filter.' : 'Add some employees to get started with your organization chart.'}</p>
+                </motion.div>
+              )}
+            </div>
           </div>
         </motion.div>
       </div>
