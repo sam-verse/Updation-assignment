@@ -16,6 +16,7 @@ const mockEmployees = [
 export function makeServer({ environment = 'development' } = {}) {
   return createServer({
     environment,
+    logging: false,
     models: { employee: Model },
     seeds(server) {
       mockEmployees.forEach(employee => server.create('employee', employee));

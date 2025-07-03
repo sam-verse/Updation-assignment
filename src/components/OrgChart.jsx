@@ -553,12 +553,10 @@ const OrgChart = ({ showMobileControls, setShowMobileControls, onEditEmployee, o
 
   // Debug: log employees, hierarchy, and positions
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('Employees:', employees);
-    // eslint-disable-next-line no-console
-    console.log('Hierarchy:', JSON.stringify(hierarchy, null, 2));
-    // eslint-disable-next-line no-console
-    console.log('Positions:', positions);
+    // Clean, readable debug logs (uncomment if needed)
+    // console.log('Employees:', employees.map(e => `${e.name} (id: ${e.id}, manager: ${e.managerId})`).join(', '));
+    // console.log('Hierarchy:', JSON.stringify(hierarchy, null, 2));
+    // console.log('Positions:', positions.map(p => `id: ${p.id}, x: ${p.x}, y: ${p.y}`).join(' | '));
   }, [employees, hierarchy, positions]);
 
   // Render employee cards at absolute positions

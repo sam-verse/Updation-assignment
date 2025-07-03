@@ -187,7 +187,7 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
             background: 'linear-gradient(120deg, #fffbe6 60%, #ffe0b2 100%)',
             border: '2.5px solid #f59e42',
             borderRadius: '1.25rem',
-            boxShadow: '0 12px 36px 0 rgba(245,158,66,0.22), 0 2px 12px 0 rgba(245,158,66,0.10)',
+            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)',
             transition: 'box-shadow 0.18s, border 0.18s',
             display: 'flex',
             alignItems: 'center',
@@ -206,7 +206,26 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
       ) : (
         <motion.div
           ref={setRefs}
-          style={{ ...style, ...(dragOverlay ? { opacity: 1 } : {}), pointerEvents: enableDnD ? 'auto' : 'none' }}
+          style={{
+            ...style,
+            ...(dragOverlay ? { opacity: 1 } : {}),
+            pointerEvents: enableDnD ? 'auto' : 'none',
+            borderWidth: variant === 'org-chart' ? '2px' : undefined,
+            borderColor: variant === 'org-chart' ? '#ffb74d' : undefined,
+            borderStyle: variant === 'org-chart' ? 'solid' : undefined,
+            borderRadius: variant === 'org-chart' ? '1.5rem' : undefined,
+            background: variant === 'org-chart' ? 'linear-gradient(120deg, #ffe0b2 60%, #ffb74d 100%)' : undefined,
+            boxShadow: '0 2px 8px 0 rgba(0,0,0,0.08)',
+            padding: variant === 'org-chart' ? '1rem' : undefined,
+            minHeight: variant === 'org-chart' ? '5.5rem' : undefined,
+            willChange: enableDnD ? 'transform, opacity' : undefined
+          }}
+          animate={{
+            scale: dragOverlay ? 1 : isDragging ? 0.98 : 1,
+            opacity: dragOverlay ? 1 : isDragging ? 0.7 : 1,
+            zIndex: dragOverlay ? 100 : isDragging ? 10 : 1,
+            // No blur or heavy box-shadow during drag/overlay for performance
+          }}
           {...(enableDnD ? { ...listeners, ...attributes } : {})}
           onDragStart={enableDnD ? handleDragStart : undefined}
           onTouchStart={enableDnD ? handleTouchStart : undefined}
@@ -218,20 +237,6 @@ const EmployeeCard = ({ employee, variant = 'org-chart', dragOverlay = false, on
             zIndex: 2 
           } : undefined}
           whileTap={!dragOverlay && enableDnD ? { scale: 0.98 } : undefined}
-          animate={{
-            scale: dragOverlay ? 1 : isDragging ? 0.98 : 1,
-            boxShadow: dragOverlay 
-              ? '0 12px 36px 0 rgba(245,158,66,0.22)' 
-              : isDragging 
-                ? '0 4px 24px 0 rgba(245,158,66,0.18)' 
-                : 'none',
-            borderColor: dragOverlay || isDragging ? '#f59e42' : '',
-            zIndex: dragOverlay ? 100 : isDragging ? 10 : 1,
-            opacity: dragOverlay ? 1 : isDragging ? 0.7 : 1,
-            filter: 'none'
-          }}
-          transition={{ type: 'spring', stiffness: 340, damping: 18, mass: 0.7 }}
-          layout
           className={`${cardClasses} relative group ${dragOverlay ? 'ring-2 ring-orange-300 border-orange-300' : ''} ${
             isDragging ? 'opacity-70' : ''
           }`}

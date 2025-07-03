@@ -89,7 +89,7 @@ const EditEmployeeModal = ({ employee, isOpen, onClose }) => {
             <motion.div
               className="absolute inset-0 z-0"
               style={{
-                background: 'linear-gradient(120deg, #ffe0b2 0%, #ffd180 40%, #ffb74d 100%)',
+                background: 'linear-gradient(120deg,rgb(131, 95, 42) 0%, #ffd180 40%, #ffb74d 100%)',
                 opacity: 0.93
               }}
               animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
