@@ -172,7 +172,22 @@ const useStore = create((set, get) => ({
     const { employees } = get();
     const employee = employees.find(emp => emp.id === employeeId);
     if (!employee) return;
-    await get().updateEmployee(employeeId, { managerId: newManagerId });
+    // Optimistically update UI
+    const previousManagerId = employee.managerId;
+    const updatedEmployees = employees.map(emp =>
+      emp.id === employeeId ? { ...emp, managerId: newManagerId } : emp
+    );
+    get().setEmployees(updatedEmployees);
+    try {
+      await get().updateEmployee(employeeId, { managerId: newManagerId });
+    } catch (e) {
+      // Revert on failure
+      const revertedEmployees = employees.map(emp =>
+        emp.id === employeeId ? { ...emp, managerId: previousManagerId } : emp
+      );
+      get().setEmployees(revertedEmployees);
+      toast.error('Failed to update employee. Change reverted.');
+    }
   },
   
   // UI State
