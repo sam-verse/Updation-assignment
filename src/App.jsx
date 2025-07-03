@@ -12,7 +12,7 @@ import EditEmployeeModal from './components/Modals/EditEmployeeModal';
 import DeleteConfirmModal from './components/Modals/DeleteConfirmModal';
 import Chatbot from './components/chatbot/Chatbot';
 
-if (process.env.NODE_ENV === 'development') makeServer();
+makeServer();
 
 function App() {
   const { fetchEmployees } = useStore();
